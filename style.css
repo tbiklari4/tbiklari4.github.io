@@ -9,6 +9,9 @@ body {
 a {
     text-decoration: none;   
 }
+a:hover {
+    text-decoration: none;
+}
 .btn-danger a {
     color: #fff;
 }

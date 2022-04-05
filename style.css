@@ -6,3 +6,9 @@ body {
     background-size: cover;
     height: 100%;
 }
+a {
+    text-decoration: none;   
+}
+.btn-danger a {
+    color: #fff;
+}

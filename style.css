@@ -1,0 +1,8 @@
+body {
+    background-color: black;
+}
+.main {
+    background: url(bg.jpg) no-repeat center center fixed; 
+    background-size: cover;
+    height: 100%;
+}

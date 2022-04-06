@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Games</title>
     <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="container-fluid bg-dark min-vh-100 text-light">
         <h1 class="text-center p-5">Games</h1>
-        <div class="row w-75 m-auto">
+        <div class="row w-75 m-auto" style="padding-bottom: 60px;">
 
 
-
-            <div class="card col-12 my-4" style="width: 17rem;">
+            <div class="card col-12 col-md-5 col-lg-5 my-4 mx-auto">
                 <img class="card-img-top" src="cover.svg" alt="Card image cap">
                 <div class="card-body text-center">
                   <h5 class="card-title text-dark text-right">سنگ کاغذ قیچی</h5>
@@ -22,10 +22,34 @@
                   <a href="stone/index.html" class="btn btn-danger">اجرا</a>
                 </div>
             </div>
-
+            
         </div>
     </div>
 
+    <footer class="footer fixed-bottom bg-danger row justify-content-center">
+        <div class="col-3"><a href="../index.html"><span class="fa fa-home"></span></a></div>
+        <div class="col-3"><a href="#"><span class="fa fa-play"></span></a></div>
+        <div class="col-3"><a><span class="fa fa-code"></span></a></div>
+        <div class="col-3"><a style="font-weight: bolder;">CV</a></div>
+    </footer>
+    <style>
+        .footer {
+            height: 50px;
+        }
+        .footer > div {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: #f7f7f7ba 1px solid;
+        }
+        .footer > div:first-child {
+            border-right: none !important;
+        }
+        .footer > div a {
+            color: #ffffff !important;
+        }
+    </style>
 
 
     <script src="../bootstrap/jquery.min.js"></script>

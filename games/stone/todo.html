@@ -1,1 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f3f3f3;
+        }
+        button {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            background: #ff4d4d;
+        }
+        .edit-btn {
+            background: #FFA500;
+        }
+        .redo-btn {
+            background: #FF9900;
+        }
+        .remove-all {
+            background: #ff4d4d;
+            margin-top: 10px;
+        }
+        .task-buttons {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Todo List</h1>
+<input type="text" id="taskInput" placeholder="Enter a new task">
+<button onclick="addTask()">Add Task</button>
+<button class="remove-all" onclick="removeAllTasks()">Remove All Tasks</button>
+<button class="remove-all" onclick="removeAllCompletedTasks()">Remove All Completed Tasks</button>
+<button onclick="exportData()">Export Data</button>
+<input type="file" id="importFile" onchange="importData(event)" style="display: none;">
+<button onclick="document.getElementById('importFile').click()">Import Data</button>
 
+<h2>Current Tasks</h2>
+<table>
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Task</th>
+        <th>Start Date</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="taskTableBody"></tbody>
+</table>
+
+<h2>Completed Tasks</h2>
+<table>
+    <thead>
+    <tr>
+        <th>No.</th>
+        <th>Task</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="completedTaskTableBody"></tbody>
+</table>
+<footer>
+    <span>tbiklari4@gmail.com</span>
+    <span>TodoListApp V1.0.2</span>
+</footer>
+<script>
+  // نگه‌داری لیست کارها و کارهای انجام‌شده
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+
+// بارگذاری داده‌ها از Local Storage
+function loadTasks() {
+    renderTasks();
+    renderCompletedTasks();
+}
+
+// ذخیره‌سازی داده‌ها در Local Storage
+function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+}
+
+// وارد کردن داده‌ها از فایل JSON
+function importData(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const data = JSON.parse(e.target.result);
+        tasks = data.tasks || [];
+        completedTasks = data.completedTasks || [];
+        saveTasks();
+        renderTasks();
+        renderCompletedTasks();
+    };
+
+    reader.readAsText(file);
+}
+
+// صادر کردن داده‌ها به فایل JSON
+function exportData() {
+    const data = {
+        tasks,
+        completedTasks
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "tasks.json");
+    document.body.appendChild(downloadAnchorNode); // Required for Firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+// اضافه کردن کار به لیست
+function addTask() {
+    const taskInput = document.getElementById('taskInput');
+    const taskText = taskInput.value.trim();
+
+    if (taskText) {
+        const task = {
+            text: taskText,
+            startDate: new Date().toLocaleString()
+        };
+        tasks.push(task);
+        taskInput.value = '';
+        saveTasks();
+        renderTasks();
+    }
+}
+
+// ویرایش کردن کار
+function editTask(index) {
+    const newTaskText = prompt("Edit your task:", tasks[index].text);
+    if (newTaskText !== null && newTaskText.trim() !== "") {
+        tasks[index].text = newTaskText.trim();
+        saveTasks();
+        renderTasks();
+    }
+}
+
+// حذف کردن کار از لیست و ذخیره در لیست کارهای انجام‌شده
+function completeTask(index) {
+    const task = tasks.splice(index, 1)[0];
+    task.endDate = new Date().toLocaleString();
+    completedTasks.push(task);
+    saveTasks();
+    renderTasks();
+    renderCompletedTasks();
+}
+
+// حذف کردن کار از لیست کارهای انجام‌شده
+function removeCompletedTask(index) {
+    completedTasks.splice(index, 1);
+    saveTasks();
+    renderCompletedTasks();
+}
+
+// بازگرداندن کار از لیست کارهای انجام‌شده به لیست کارها
+function redoTask(index) {
+    const task = {...completedTasks[index]}; // ساخت یک کپی از کار
+    delete task.endDate;
+    tasks.push(task);
+    saveTasks();
+    renderTasks();
+    renderCompletedTasks();
+}
+
+// حذف یک کار از لیست کارها
+function removeTask(index) {
+    tasks.splice(index, 1);
+    saveTasks();
+    renderTasks();
+}
+
+// حذف تمامی کارها از لیست
+function removeAllTasks() {
+    tasks = [];
+    saveTasks();
+    renderTasks();
+}
+
+// حذف تمامی کارهای انجام‌شده از لیست
+function removeAllCompletedTasks() {
+    completedTasks = [];
+    saveTasks();
+    renderCompletedTasks();
+}
+
+// نمایش لیست کارها در جدول
+function renderTasks() {
+    const taskTable = document.getElementById('taskTableBody');
+    taskTable.innerHTML = '';
+
+    tasks.forEach((task, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${task.text}</td>
+            <td>${task.startDate}</td>
+            <td>
+                <button onclick="completeTask(${index})">Complete</button> 
+                <button class="edit-btn" onclick="editTask(${index})">Edit</button>
+                <button class="delete-btn" onclick="removeTask(${index})">Delete</button>
+            </td>
+        `;
+        taskTable.appendChild(row);
+    });
+}
+
+// نمایش لیست کارهای انجام‌شده در جدول
+function renderCompletedTasks(){
+    const completedTaskTable = document.getElementById('completedTaskTableBody');
+    completedTaskTable.innerHTML = '';
+
+    completedTasks.forEach((task, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${task.text}</td>
+            <td>${task.startDate}</td>
+            <td>${task.endDate}</td>
+            <td>
+                <button class="redo-btn" onclick="redoTask(${index})">Redo</button>
+                <button class="delete-btn" onclick="removeCompletedTask(${index})">Delete</button>
+            </td>
+        `;
+        completedTaskTable.appendChild(row);
+    });
+}
+
+// اضافه کردن رویداد برای فشردن Enter در فیلد وارد کردن تسک
+document.getElementById('taskInput').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        addTask();
+    }
+});
+
+// نمایش لیست‌ها هنگام بارگذاری صفحه
+document.addEventListener('DOMContentLoaded', () => {
+    loadTasks();
+});
+</script>
+</body>
+</html>

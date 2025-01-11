@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,11 +46,18 @@
             display: flex;
             gap: 10px;
         }
+        .subtasks {
+            margin-top: 10px;
+        }
+        .subtasks input {
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
 <h1>Todo List</h1>
 <input type="text" id="taskInput" placeholder="Enter a new task">
+<input type="number" id="taskStages" placeholder="Enter number of stages" min="1">
 <button onclick="addTask()">Add Task</button>
 <button class="remove-all" onclick="removeAllTasks()">Remove All Tasks</button>
 <button class="remove-all" onclick="removeAllCompletedTasks()">Remove All Completed Tasks</button>
@@ -89,7 +96,7 @@
     <span>TodoListApp V1.0.2</span>
 </footer>
 <script>
-  // نگه‌داری لیست کارها و کارهای انجام‌شده
+// نگه‌داری لیست کارها و کارهای انجام‌شده
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 let completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
 
@@ -140,15 +147,20 @@ function exportData() {
 // اضافه کردن کار به لیست
 function addTask() {
     const taskInput = document.getElementById('taskInput');
+    const taskStages = document.getElementById('taskStages');
     const taskText = taskInput.value.trim();
+    const stagesCount = parseInt(taskStages.value);
 
-    if (taskText) {
+    if (taskText && stagesCount > 0) {
         const task = {
             text: taskText,
-            startDate: new Date().toLocaleString()
+            startDate: new Date().toLocaleString(),
+            stages: stagesCount,
+            completedStages: 0
         };
         tasks.push(task);
         taskInput.value = '';
+        taskStages.value = '';
         saveTasks();
         renderTasks();
     }
@@ -159,6 +171,17 @@ function editTask(index) {
     const newTaskText = prompt("Edit your task:", tasks[index].text);
     if (newTaskText !== null && newTaskText.trim() !== "") {
         tasks[index].text = newTaskText.trim();
+        saveTasks();
+        renderTasks();
+    }
+}
+
+// تکمیل کردن یک مرحله از کار
+function completeStage(index) {
+    tasks[index].completedStages += 1;
+    if (tasks[index].completedStages >= tasks[index].stages) {
+        completeTask(index);
+    } else {
         saveTasks();
         renderTasks();
     }
@@ -185,6 +208,7 @@ function removeCompletedTask(index) {
 function redoTask(index) {
     const task = {...completedTasks[index]}; // ساخت یک کپی از کار
     delete task.endDate;
+    task.completedStages = 0;
     tasks.push(task);
     saveTasks();
     renderTasks();
@@ -224,7 +248,7 @@ function renderTasks() {
             <td>${task.text}</td>
             <td>${task.startDate}</td>
             <td>
-                <button onclick="completeTask(${index})">Complete</button> 
+                <button onclick="completeStage(${index})">Complete Stage (${task.completedStages}/${task.stages})</button> 
                 <button class="edit-btn" onclick="editTask(${index})">Edit</button>
                 <button class="delete-btn" onclick="removeTask(${index})">Delete</button>
             </td>
@@ -234,7 +258,7 @@ function renderTasks() {
 }
 
 // نمایش لیست کارهای انجام‌شده در جدول
-function renderCompletedTasks(){
+function renderCompletedTasks() {
     const completedTaskTable = document.getElementById('completedTaskTableBody');
     completedTaskTable.innerHTML = '';
 

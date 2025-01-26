@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فرم ساده</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<style>
+    /* فایل styles.css */
+    :root {
+        /*--color1 : #0057c7;*/
+        /*--color2 : #a9cbf6;*/
+        /*--color1 : #3498;*/
+        /*--color2 : #ecf0f1;*/
+
+        /*--color1 : #2ecc71;*/
+        /*--color2 : #bdc3c7;*/
+        /*--color3 : #2c3e50;*/
+        /*--color4 : #27ae60;*/
+
+
+        /*--color1 : #e74c3c;*/
+        /*--color2 : #f5f5f5*/
+        /*--color3 : #2c3e50;*/
+        /*--color4 : #e74c3c;*/
+
+        --color1 : #9b59b6;
+        --color2 : #ecf0f1;
+        --color3 : #2c3e50;
+        --color4 : #8e44ad;
+
+
+    }
+    body {
+        background-color: #f2f2f2;
+        display: flex;
+        flex-flow : column wrap;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    li {
+        list-style: none;
+    }
+    .form-container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px 10px 0 0;
+        width: 350px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    .row {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-evenly;
+    }
+    #text_input {
+        width: 200px;
+    }
+    #number_input {
+        width: 70px;
+        appearance: textfield;
+    }
+    #number_input , #text_input {
+        height: 30px;
+        border: 2px solid var(--color4);
+        border-radius: 5px;
+        text-align: center;
+        color: var(--color3);
+        background: var(--color2);
+    }
+    #number_input:focus , #text_input:focus {
+        outline: none;
+    }
+    .button-container1 {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(4,65px);
+        grid-template-rows: 30px 10px;
+        row-gap: 10px;
+        justify-content: space-evenly;
+    }
+    .button-container2 {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(4,65px);
+        grid-template-rows: 40px;
+        row-gap: 10px;
+        justify-content: space-evenly;
+    }
+    .button {
+        color: #ffffff;
+        background-color: var(--color1);
+        border: none;
+        border-radius: 5px;
+        font-size: 12px;
+    }
+    .button1 {
+        grid-column: 1/5;
+    }
+    .buttonL {
+        grid-column: 1/3;
+    }
+    .buttonR {
+        grid-column: 3/5;
+    }
+    .tasks {
+        background-color: #ffffff;
+        padding: 0 20px 20px 20px;
+        border-radius: 0 0 10px 10px;
+        /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+        width: 350px;
+        height: 500px;
+        display: flex;
+        flex-flow: column nowrap;
+    }
+    .tab-controller {
+        width: 100%;
+        height: 40px;
+        display: grid;
+        grid-template-columns: repeat(5 ,60px);
+        grid-template-rows: 40px;
+        justify-content: center;
+    }
+    .tab-controller :first-child {
+        border-top-left-radius: 5px;
+    }
+    .tab-controller :last-child {
+        border-top-right-radius: 5px;
+    }
+    .tab-link {
+        padding: 8px 0;
+        background: var(--color2);
+
+        border-right: 1px solid lightgray;
+        text-align: center;
+    }
+    .org1 {
+        grid-column: 1/3;
+    }
+    .org2 {
+        grid-column: 3/5;
+    }
+    .tab-active {
+        background-color: var(--color1);
+        color: #ffffff;
+    }
+    .tab-content {
+        width: 350px;
+        height: 455px;
+        border: 2px solid var(--color4);
+        border-radius: 5px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+    }
+    .tab-item {
+        padding: 0;
+        margin: 0;
+        display: none;
+        grid-template-columns: 1fr;
+    }
+    .tab-item-active {
+        display: flex;
+        flex-flow: column nowrap;
+    }
+    .tab-item > li {
+        list-style: none;
+        padding: 10px;
+        min-height: 30px;
+        border-top: 1px solid #dddddd;
+    }
+    .tab-item > li:nth-child(2) {
+        margin-top: 50px;
+    }
+    .tab-item > li:nth-child(1) {
+        position: fixed;
+        display: block;
+        text-align: center;
+        width: 350px;
+        padding: 10px 0;
+    }
+    .tab-item > li {
+        display: grid;
+        grid-template-columns: 20px 150px 80px;
+        justify-content: center;
+        background: var(--color2);
+    }
+    .tab-item > li > ul {
+        display: none;
+        grid-column: 1/4;
+        flex-flow: row wrap;
+        padding: 0;
+        justify-content: space-evenly;
+    }
+    .drop-active {
+        display: flex !important;
+    }
+    .tab-item > li > ul > li {
+        width: 75px;
+    }
+    .tab-item > li > ul > li:nth-child(1) {
+        width: 250px;
+        display: flex;
+        height: 30px;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+    .stage {
+        display: flex;
+        width: 180px;
+        height: 5px;
+        background: var(--color2);
+        border: 1px solid var(--color1);
+        justify-content: space-around;
+        align-items: center;
+    }
+    .stage11 {
+        display: block;
+        height: 5px;
+        background: var(--color1);
+        width: 80%;
+    }
+    .stager {
+        display: block;
+        height: 3px;
+
+    }
+    .stager-active {
+        background: var(--color1);
+    }
+</style>
+<div class="form-container">
+    <form>
+        <h1 style="text-align: center; color: var(--color1)">TODOLIST</h1>
+        <div class="row">
+            <input type="text" id="text_input" placeholder="متن" name="text_input" required>
+            <input type="number" id="number_input" name="number_input" placeholder="عدد" required>
+        </div>
+        <div class="button-container2">
+            <button class="button button1" type="button" onclick="addTask()">ایجاد تسک</button>
+        </div>
+        <div class="button-container1">
+            <input type="file" id="importFile" onchange="importData(event)" style="display: none;">
+            <button class="button buttonL" type="button" onclick="document.getElementById('importFile').click()">Import Data</button>
+            <button class="button buttonR" type="button" onclick="exportData()">Export Data</button>
+        </div>
+    </form>
+</div>
+<div class="tasks">
+    <div class="tab-controller">
+        <a class="tab-link org1" onclick="taskActivator(1)">جاری</a>
+        <a class="tab-link org2" onclick="taskActivator(2)">تکمیل شده</a>
+        <a class="tab-link" onclick="taskActivator(3)">راهنما</a>
+    </div>
+    <div class="tab-content">
+        <ul class="tab-item" id="taskTable">
+        </ul>
+        <ul class="tab-item" id="completedTaskTable">
+        </ul>
+        <div class="tab-item">
+            <h3>راهنما</h3>
+            <p>شما میتوانید برای خود تسک ایجاد کنید و با استفاده از فایل json فعالیت های خود را ذخیره کنید میتوانید تعریف کنید که تسک شما باید چند مرحله داشته باشد و حتی با کلیک بر روی ؟ میتوانید تاریخ شروع تسک را مشاهده کنید</p>
+        </div>
+    </div>
+    <div class="button-container1">
+        <button class="button buttonL" type="button" onclick="removeAllTasks()">Remove all tasks</button>
+        <button class="button buttonR" type="button" onclick="removeAllCompletedTasks()">Remove completed tasks</button>
+    </div>
+</div>
+<script>//new codes
+// نگه‌داری لیست کارها و کارهای انجام‌شده
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
+// نمایش لیست کارها در جدول
+const renderTasks = () => {
+    const taskTable = document.getElementById('taskTable');
+    taskTable.innerHTML = `
+<li>
+        <button class="button buttonL" type="button" onclick="removeAllTasks()">Remove all tasks</button>
+</li>
+`;
+    tasks.forEach((task, index) => {
+        const row = document.createElement('li')
+        let span = `<span>${index + 1}.</span><span>${task.text}</span><span>${task.startDate}</span>`
+        let stage = ""
+        if(task.stages > 10){
+            let width = "width: " + Math.floor((task.completedStages / task.stages) * 100) + "%;"
+            stage += `<div class="stage"><span class="stage11" style="${width}"></span></div>`
+        } else {
+            let stager = ""
+            let stageWidth = (180 / task.stages - 2)
+            for (let i = 1; i <= task.stages; i++){
+                if (i <= task.completedStages) {
+                    stager += `<span class="stager stager-active" style="width: ${stageWidth}px"></span>`
+                } else {
+                    stager += `<span class="stager" style="width: ${stageWidth}px"></span>`
+
+                }
+            }
+            stage += `<div class='stage'>${stager}</div>`
+        }
+        let dropdown = `<ul id="${'dropItem' + (index + 1)}">${stage}<span>${task.completedStages}/${task.stages}</span><button onclick="completeStage(${index})">Complete Stage</button><button class="edit-btn" onclick="editTask(${index})">Edit</button><button class="edit-btn" onclick="editTaskStages(${index})">Edit Stages</button><button class="delete-btn" onclick="removeTask(${index})">Delete</button></ul>`
+        row.innerHTML += span + dropdown
+        taskTable.appendChild(row);
+        row.addEventListener("click",() => dropDowner(index+1))
+    });
+}
+// نمایش لیست کارهای انجام‌شده در جدول
+const renderCompletedTasks = () => {
+    const completedTaskTable = document.getElementById('completedTaskTable');
+    completedTaskTable.innerHTML = '';
+
+    completedTasks.forEach((task, index) => {
+        const row = document.createElement('li');
+        row.innerHTML += `
+            <li>
+            <span>${index + 1}.</span>
+            <span>${task.text}</span>
+            <span>Date:</span>
+            <span>${task.startDate}|</span>
+            <span>${task.endDate}</span>
+            <button class="redo-btn" onclick="redoTask(${index})">Redo</button>
+            <button class="delete-btn" onclick="removeCompletedTask(${index})">Delete</button>
+            </li>
+        `;
+        completedTaskTable.appendChild(row);
+    });
+}
+// بارگذاری داده‌ها از Local Storage
+const loadTasks = () => {
+    renderTasks();
+    renderCompletedTasks();
+}
+// ذخیره‌سازی داده‌ها در Local Storage
+const saveTasks = () => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+}
+// وارد کردن داده‌ها از فایل JSON
+const importData = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const data = JSON.parse(e.target.result);
+        tasks = data.tasks || [];
+        completedTasks = data.completedTasks || [];
+        saveTasks();
+        renderTasks();
+        renderCompletedTasks();
+    };
+    reader.readAsText(file);
+}
+// صادر کردن داده‌ها به فایل JSON
+const exportData = () => {
+    const data = {
+        tasks,
+        completedTasks
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "tasks.json");
+    document.body.appendChild(downloadAnchorNode); // Required for Firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+// اضافه کردن کار به لیست
+const addTask = () => {
+    const taskInput = document.getElementById('text_input');
+    const taskStages = document.getElementById('number_input');
+    const taskText = taskInput.value.trim();
+    const stagesCount = parseInt(taskStages.value);
+    if (taskText && stagesCount > 0) {
+        const task = {
+            text: taskText,
+            startDate: new Date().toLocaleString(),
+            stages: stagesCount,
+            completedStages: 0
+        };
+        tasks.push(task);
+        taskInput.value = '';
+        taskStages.value = '';
+        saveTasks();
+        renderTasks();
+    }
+}
+// ویرایش کردن کار
+const editTask = (index) => {
+    const newTaskText = prompt("Edit your task:", tasks[index].text);
+    if (newTaskText !== null && newTaskText.trim() !== "") {
+        tasks[index].text = newTaskText.trim();
+        saveTasks();
+        renderTasks();
+    }
+}
+// ویرایش تعداد مراحل کار
+const editTaskStages = (index) => {
+    const newStagesCount = parseInt(prompt("Edit number of stages:", tasks[index].stages));
+    if (!isNaN(newStagesCount) && newStagesCount > 0) {
+        tasks[index].stages = newStagesCount;
+        saveTasks();
+        renderTasks();
+    }
+}
+// تکمیل کردن یک مرحله از کار
+const completeStage = (index) => {
+    tasks[index].completedStages += 1;
+    if (tasks[index].completedStages >= tasks[index].stages) {
+        completeTask(index);
+    } else {
+        saveTasks();
+        renderTasks();
+    }
+}
+// حذف کردن کار از لیست و ذخیره در لیست کارهای انجام‌شده
+const completeTask = (index) => {
+    const task = tasks.splice(index, 1)[0];
+    task.endDate = new Date().toLocaleString();
+    completedTasks.push(task);
+    saveTasks();
+    renderTasks();
+    renderCompletedTasks();
+}
+// حذف کردن کار از لیست کارهای انجام‌شده
+const removeCompletedTask = (index) => {
+    completedTasks.splice(index, 1);
+    saveTasks();
+    renderCompletedTasks();
+}
+// بازگرداندن کار از لیست کارهای انجام‌شده به لیست کارها
+const redoTask = (index) => {
+    const task = {...completedTasks[index]}; // ساخت یک کپی از کار
+    delete task.endDate;
+    task.completedStages = 0;
+    tasks.push(task);
+    saveTasks();
+    renderTasks();
+    renderCompletedTasks();
+}
+// حذف یک کار از لیست کارها
+const removeTask = (index) => {
+    tasks.splice(index, 1);
+    saveTasks();
+    renderTasks();
+}
+// حذف تمامی کارها از لیست
+const removeAllTasks = () => {
+    tasks = [];
+    saveTasks();
+    renderTasks();
+}
+// حذف تمامی کارهای انجام‌شده از لیست
+const removeAllCompletedTasks = () => {
+    completedTasks = [];
+    saveTasks();
+    renderCompletedTasks();
+}
+// اضافه کردن رویداد برای فشردن Enter در فیلد وارد کردن تسک و تعداد مراحل
+document.getElementById('taskInput').addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+        addTask();
+    }
+});
+document.getElementById('taskStages').addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') {
+        addTask();
+    }
+});
+// نمایش لیست‌ها هنگام بارگذاری صفحه
+document.addEventListener('DOMContentLoaded', () => {
+    loadTasks();
+});</script>
+<script>
+    function handleAction(action) {
+        alert(action + ' فشرده شد!');
+    }
+    const taskActivator = (tabName) => {
+        let tabContent = document.querySelectorAll(".tab-item")
+        let tabLink = document.querySelectorAll(".tab-link")
+        tabContent.forEach(tabContent => tabContent.classList.remove("tab-item-active"))
+        tabLink.forEach(tabContent => tabContent.classList.remove("tab-active"))
+        tabContent[tabName - 1].classList.add("tab-item-active")
+        tabLink[tabName - 1].classList.add("tab-active")
+    }
+    taskActivator(2)
+    renderTasks()
+    renderCompletedTasks()
+    const dropDowner = (dropName) => {
+        let dropContent = document.getElementById("dropItem" + dropName)
+        dropContent.classList.toggle("drop-active")
+        console.log(dropContent)
+    }
+</script>
+</body>
+</html>

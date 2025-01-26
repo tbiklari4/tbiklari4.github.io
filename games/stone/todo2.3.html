@@ -276,6 +276,7 @@
     </div>
 </div>
 <script>//new codes
+//new codes
 // نگه‌داری لیست کارها و کارهای انجام‌شده
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 let completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || [];
@@ -293,7 +294,7 @@ const renderTasks = () => {
         let stage = ""
         if(task.stages > 10){
             let width = "width: " + Math.floor((task.completedStages / task.stages) * 100) + "%;"
-            stage += `<div class="stage"><span class="stage11" style="${width}"></span></div>`
+            stage += `<div class="stage" style="justify-content: start"><span class="stage11" style="${width}"></span></div>`
         } else {
             let stager = ""
             let stageWidth = (180 / task.stages - 2)
@@ -302,7 +303,6 @@ const renderTasks = () => {
                     stager += `<span class="stager stager-active" style="width: ${stageWidth}px"></span>`
                 } else {
                     stager += `<span class="stager" style="width: ${stageWidth}px"></span>`
-
                 }
             }
             stage += `<div class='stage'>${stager}</div>`
@@ -477,7 +477,8 @@ document.getElementById('taskStages').addEventListener('keyup', (event) => {
 // نمایش لیست‌ها هنگام بارگذاری صفحه
 document.addEventListener('DOMContentLoaded', () => {
     loadTasks();
-});</script>
+});
+</script>
 <script>
     function handleAction(action) {
         alert(action + ' فشرده شد!');
